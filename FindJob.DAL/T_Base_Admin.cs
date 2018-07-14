@@ -23,7 +23,7 @@ namespace FindJob.DAL
             //cm.CommandText = "select * from t_base_FindJob";
             EPName = "'%" + EPName + "%'";
 
-            cm.CommandText = "select top " + PageSize + " * from  T_Base_Enterprise where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from T_Base_Enterprise where Name like " + EPName + ")     and  Name like " + EPName;
+            cm.CommandText = "select top " + PageSize + " * from  T_Base_Enterprise where id not in (select top " + PageSize * (CurrentPage - 1) + " id from T_Base_Enterprise where ischecked=1 and Name like " + EPName + ")   and ischecked = 1  and  Name like " + EPName;
             //cm.Parameters.AddWithValue("@pageSize", PageSize);
             //cm.Parameters.AddWithValue("@beforeCount", PageSize * (CurrentPage - 1));
             SqlDataReader dr = cm.ExecuteReader();
@@ -55,7 +55,7 @@ namespace FindJob.DAL
             co.Open();
             SqlCommand cm = new SqlCommand();
             cm.Connection = co;
-            cm.CommandText = "select count(*) from T_Base_Enterprise";
+            cm.CommandText = "select count(*) from T_Base_Enterprise where ischecked=1";
             object obj = cm.ExecuteScalar();
             co.Close();
             return (int)obj;
@@ -93,7 +93,7 @@ namespace FindJob.DAL
             MajorName = "'%" + MajorName + "%'";
             ClassName = "'%" + ClassName + "%'";
 
-            cm.CommandText = "select top " + PageSize + " * from  T_Base_Student where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from T_Base_Student where Name like " + StuName + " and Major like " +MajorName+" and Class like " +ClassName+ " and School like "+SchoolName+") and  Name like " + StuName+ " and Major like " + MajorName + " and Class like " + ClassName+ " and School like " + SchoolName;
+            cm.CommandText = "select top " + PageSize + " * from  T_Base_Student where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from T_Base_Student where ischeck=1 and Name like " + StuName + " and Major like " +MajorName+" and Class like " +ClassName+ " and School like "+SchoolName+") and  Name like " + StuName+ " and Major like " + MajorName + " and Class like " + ClassName+ " and ischeck = 1 and School like " + SchoolName ;
             //cm.Parameters.AddWithValue("@pageSize", PageSize);
             //cm.Parameters.AddWithValue("@beforeCount", PageSize * (CurrentPage - 1));
             SqlDataReader dr = cm.ExecuteReader();
@@ -111,7 +111,7 @@ namespace FindJob.DAL
                 Stu.School = Convert.ToString(dr["School"]);
                 Stu.IdCard = Convert.ToString(dr["IdCard"]);
                 Stu.UserId = Convert.ToInt32(dr["UserId"]);
-
+                Stu.Gender = Convert.ToString(dr["Gender"]);
                 lst.Add(Stu);
             }
             dr.Close();
@@ -125,7 +125,7 @@ namespace FindJob.DAL
             co.Open();
             SqlCommand cm = new SqlCommand();
             cm.Connection = co;
-            cm.CommandText = "select count(*) from T_Base_Student";
+            cm.CommandText = "select count(*) from T_Base_Student where ischeck=1";
             object obj = cm.ExecuteScalar();
             co.Close();
             return (int)obj;

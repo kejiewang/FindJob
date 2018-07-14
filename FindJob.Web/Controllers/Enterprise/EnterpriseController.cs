@@ -19,5 +19,16 @@ namespace FindJob.Web.Controllers.Enterprise
         {
             return View();
         }
-	}
+
+        public ActionResult AddInfoSave(FindJob.Model.T_Base_Enterprise enterprice)
+        {
+            //待修改
+            enterprice.UserId = 1;
+
+
+            FindJob.BLL.T_Base_Enterpirse bll = new FindJob.BLL.T_Base_Enterpirse();
+            bll.AddInfoSave(enterprice);
+            return RedirectToAction("Index");
+        }
+    }
 }

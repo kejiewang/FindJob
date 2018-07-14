@@ -13,7 +13,7 @@ namespace FindJob.Model
         public string Major { get; set; }
         public string Phone { get; set; }
         public string Class { get; set; }
-        public Boolean Gender { get; set; }
+        public string Gender { get; set; }
         public string Name { get; set; }
         public string School { get; set; }
         public string GraduateProve { get; set; }
