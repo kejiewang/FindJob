@@ -1,0 +1,9 @@
+*.user 
+*.suo 
+Bin/ 
+bin/
+Obj/ 
+obj/ 
+Thumbs.db 
+thumbs.db 
+*.config
