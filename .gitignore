@@ -6,4 +6,4 @@ Obj/
 obj/ 
 Thumbs.db 
 thumbs.db 
-*.config
+Web.config
