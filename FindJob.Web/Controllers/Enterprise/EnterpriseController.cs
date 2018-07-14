@@ -10,6 +10,7 @@ namespace FindJob.Web.Controllers.Enterprise
     {
         //
         // GET: /Enterprise/
+
         public ActionResult Index()
         {
             return View();
@@ -28,6 +29,24 @@ namespace FindJob.Web.Controllers.Enterprise
 
             FindJob.BLL.T_Base_Enterpirse bll = new FindJob.BLL.T_Base_Enterpirse();
             bll.AddInfoSave(enterprice);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult UpdateInfo(int id = 8)
+        {
+            //待修改
+            
+            FindJob.Model.T_Base_Enterprise enterprise= new FindJob.BLL.T_Base_Enterpirse().GetModel(id);
+            ViewBag.enterprise = enterprise;
+            return View();
+        }
+
+        public ActionResult EditInfoSave(FindJob.Model.T_Base_Enterprise enterprise)
+        {
+            //待修改
+          
+            FindJob.BLL.T_Base_Enterpirse bll = new FindJob.BLL.T_Base_Enterpirse();
+            bll.Update(enterprise);
             return RedirectToAction("Index");
         }
     }

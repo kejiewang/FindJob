@@ -12,5 +12,25 @@ namespace FindJob.BLL
         {
             return new FindJob.DAL.T_Base_Enterprise().AddInfoSave(enterprise);
         }
+
+        public FindJob.Model.T_Base_Enterprise GetModel(int Id)
+        {
+
+            FindJob.Model.T_Base_Enterprise enterprise = new Model.T_Base_Enterprise();
+            enterprise = (new FindJob.DAL.T_Base_Enterprise()).GetModel(Id);
+
+            return enterprise;
+        }
+        public int Update(FindJob.Model.T_Base_Enterprise enterprise)
+        {
+            FindJob.DAL.T_Base_Enterprise dal = new DAL.T_Base_Enterprise();
+
+            int result = dal.Update(enterprise);
+
+            return result;
+
+        }
+
+
     }
 }
