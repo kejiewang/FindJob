@@ -38,7 +38,7 @@ namespace FindJob.Web.Controllers.Enterprise
         {
             return View();
         }
-        public ActionResult AddSave(string JobName, string Tel, string Fax, string Memo)
+        public ActionResult AddSave(string JobName,string Memo)
         {
             FindJob.Model.T_Base_Job job = new Model.T_Base_Job();
             job.JobName = JobName;
