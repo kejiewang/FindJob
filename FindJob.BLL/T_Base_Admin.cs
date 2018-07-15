@@ -103,5 +103,23 @@ namespace FindJob.BLL
             string idstring = string.Join(", ", ids);
             return dal.EICheckPass(idstring);
         }
+        /// <summary>
+        /// 学生就业信息
+        /// </summary>
+        public List<Model.T_Base_EI> EIGetList(int pageSize, int pageIndex, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            return dal.EIGetList(pageIndex, pageSize, StuName, SchoolName, MajorName, ClassName);
+        }
+        public int EICount()
+        {
+            return dal.EICount();
+        }
+        public int EIDelete(string[] ids)
+        {
+            //防止注入式漏洞
+            string idstring = string.Join(", ", ids);
+            return dal.EIDelete(idstring);
+        }
+   
     }
 }
