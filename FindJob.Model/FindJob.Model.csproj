@@ -50,6 +50,7 @@
     <Compile Include="T_Base_Enterprise.cs" />
     <Compile Include="T_Base_Intent.cs" />
     <Compile Include="T_Base_Job.cs" />
+    <Compile Include="T_Base_Job_Page.cs" />
     <Compile Include="T_Base_Menu.cs" />
     <Compile Include="T_Base_Role.cs" />
     <Compile Include="T_Base_RoleMenu.cs" />

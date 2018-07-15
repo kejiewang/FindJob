@@ -14,5 +14,17 @@ namespace FindJob.Web.Controllers.Student
         {
             return View();
         }
+
+        public ActionResult AddInfo()
+        {
+            return View();
+        }
+
+        //public ActionResult AddInfoSave(FindJob.Model.T_Base_Student item)
+        //{
+        //    //待修改
+
+        //}
+
 	}
 }

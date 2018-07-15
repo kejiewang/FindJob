@@ -51,5 +51,21 @@ namespace FindJob.BLL
             string idstring = string.Join(", ", ids);
             return dal.EPDelete(idstring);
         }
+        public List<FindJob.Model.T_Relation_ApplyJob> ApplyJobGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            return dal.ApplyJobGetList(CurrentPage, PageSize, StuName, SchoolName, MajorName, ClassName);
+        }
+        public int ApplyJobCount()
+        {
+            return dal.ApplyJobCount();
+        }
+        public List<FindJob.Model.T_Base_Enterprise> EPCheckGetList(int CurrentPage, int PageSize, string EPName)
+        {
+            return dal.EPCheckGetList(CurrentPage, PageSize, EPName);
+        }
+        public int EPCheckCount()
+        {
+            return dal.EPCheckCount();
+        }
     }
 }

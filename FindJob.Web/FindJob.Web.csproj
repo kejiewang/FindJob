@@ -631,6 +631,7 @@
     <Compile Include="Attribute\RoleAuthorizeAttribute.cs" />
     <Compile Include="Controllers\Admin\adminController.cs" />
     <Compile Include="Controllers\Enterprise\EnterpriseController.cs" />
+    <Compile Include="Controllers\Enterprise\JobController.cs" />
     <Compile Include="Controllers\Home\HomeController.cs" />
     <Compile Include="Controllers\Student\StudentController.cs" />
     <Compile Include="Global.asax.cs">
@@ -756,6 +757,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\admin\StuIndex.cshtml" />
     <Content Include="Views\Enterprise\UpdateInfo.cshtml" />
+    <Content Include="Views\admin\EPCheck.cshtml" />
+    <Content Include="Views\Job\Index.cshtml" />
+    <Content Include="Views\Student\AddInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

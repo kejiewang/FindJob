@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace FindJob.Web.Controllers.Admin
@@ -63,7 +60,31 @@ namespace FindJob.Web.Controllers.Admin
             return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
         }
 
+        public ActionResult ApplyJobIndex()
+        {
+            return View();
+        }
+        public JsonResult ApplyJobGetList(int pageSize, int pageIndex, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
 
+            List<FindJob.Model.T_Relation_ApplyJob> lst = new List<FindJob.Model.T_Relation_ApplyJob>();
+            lst = bll.ApplyJobGetList(pageIndex, pageSize, StuName, SchoolName, MajorName, ClassName);
+            int count = bll.ApplyJobCount();
+            return Json(new { total = count, rows = lst });
+            //return Json(lst);
+        }
+        public ActionResult EPCheck()
+        {
+            return View();
+        }
+        public JsonResult EPCheckGetList(int pageSize, int pageIndex, string EPName)
+        {
 
+            List<FindJob.Model.T_Base_Enterprise> lst = new List<FindJob.Model.T_Base_Enterprise>();
+            lst = bll.EPCheckGetList(pageIndex, pageSize, EPName);
+            int count = bll.EPCheckCount();
+            return Json(new { total = count, rows = lst });
+            //return Json(lst);
+        }
     }
 }
