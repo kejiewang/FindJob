@@ -12,10 +12,6 @@ namespace FindJob.BLL
         /// <summary>
         /// 企业模块
         /// </summary>
-        /// <param name="CurrentPage"></param>
-        /// <param name="PageSize"></param>
-        /// <param name="EPName"></param>
-        /// <returns></returns>
         public List<FindJob.Model.T_Base_Enterprise> GetList(int CurrentPage, int PageSize, string EPName)
         {
             return dal.GetList(CurrentPage, PageSize, EPName);
@@ -33,10 +29,6 @@ namespace FindJob.BLL
         /// <summary>
         /// 学生模块
         /// </summary>
-        /// <param name="CurrentPage"></param>
-        /// <param name="PageSize"></param>
-        /// <param name="EPName"></param>
-        /// <returns></returns>
         public List<FindJob.Model.T_Base_Student> GetList(int CurrentPage, int PageSize, string StuName,string SchoolName,string MajorName,string ClassName)
         {
             return dal.GetList(CurrentPage, PageSize, StuName, SchoolName, MajorName, ClassName);
@@ -50,6 +42,66 @@ namespace FindJob.BLL
             //防止注入式漏洞
             string idstring = string.Join(", ", ids);
             return dal.EPDelete(idstring);
+        }
+        /// <summary>
+        /// 求职学生信息
+        /// </summary>
+        public List<FindJob.Model.T_Relation_ApplyJob> ApplyJobGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            return dal.ApplyJobGetList(CurrentPage, PageSize, StuName, SchoolName, MajorName, ClassName);
+        }
+        public int ApplyJobCount()
+        {
+            return dal.ApplyJobCount();
+        }
+        /// <summary>
+        /// 企业信息审核
+        /// </summary>
+        public List<FindJob.Model.T_Base_Enterprise> EPCheckGetList(int CurrentPage, int PageSize, string EPName)
+        {
+            return dal.EPCheckGetList(CurrentPage, PageSize, EPName);
+        }
+        public int EPCheckCount()
+        {
+            return dal.EPCheckCount();
+        }
+        public int EPCheckPass(string[] ids)
+        {
+            //防止注入式漏洞
+            string idstring = string.Join(", ", ids);
+            return dal.EPCheckPass(idstring);
+        }
+        /// <summary>
+        /// 学生审核
+        /// </summary>
+        public List<FindJob.Model.T_Base_Student> StuCheckGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            return dal.StuCheckGetList(CurrentPage, PageSize, StuName, SchoolName, MajorName, ClassName);
+        }
+        public int StuCheckCount()
+        {
+            return dal.StuCheckCount();
+        }
+        public int StuCheckPass(string[] ids)
+        {
+            //防止注入式漏洞
+            string idstring = string.Join(", ", ids);
+            return dal.StuCheckPass(idstring);
+        }
+
+        public List<FindJob.Model.T_Base_EI> EICheckGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            return dal.EICheckGetList(CurrentPage, PageSize, StuName, SchoolName, MajorName, ClassName);
+        }
+        public int EICheckCount()
+        {
+            return dal.EICheckCount();
+        }
+        public int EICheckPass(string[] ids)
+        {
+            //防止注入式漏洞
+            string idstring = string.Join(", ", ids);
+            return dal.EICheckPass(idstring);
         }
     }
 }
