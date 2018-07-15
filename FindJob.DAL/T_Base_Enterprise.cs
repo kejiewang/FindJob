@@ -27,7 +27,7 @@ namespace FindJob.DAL
             cm.Parameters.AddWithValue("@Qualification", enterprise.Qualification);
             cm.Parameters.AddWithValue("@IsChecked", false);
             cm.Parameters.AddWithValue("@UserId", enterprise.Id);
-            cm.CommandText = "insert into T_Base_Enterprise values(@Name,@Tel,@Address,@Introduction,@Qualification,@IsChecked,@UserId)";
+            cm.CommandText = "insert into T_Base_EnterpriseCheck values(@Name,@Tel,@Address,@Introduction,@Qualification,@IsChecked,@UserId)";
             int result = cm.ExecuteNonQuery();
 
 
@@ -72,7 +72,7 @@ namespace FindJob.DAL
             co.Open();
             SqlCommand cm = new SqlCommand();
             cm.Connection = co;
-            cm.CommandText = "update T_Base_Enterprise set Name=@Name, Tel=@Tel, Address=@Address," +
+            cm.CommandText = "update T_Base_EnterpriseCheck set Name=@Name, Tel=@Tel, Address=@Address," +
                 "Introduction=@Introduction,Qualification=@Qualification,IsChecked=@IsChecked,UserId=@UserId where Id=@Id";
             cm.Parameters.AddWithValue("@Id", enterprise.Id);
             cm.Parameters.AddWithValue("@Name", enterprise.Name);
