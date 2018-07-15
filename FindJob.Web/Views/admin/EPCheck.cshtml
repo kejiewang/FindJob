@@ -149,7 +149,7 @@
             field: 'caozuo',
             align: 'center',
             formatter: function (value, row, index) {
-                var e = '<a  style="display: block;" class="btn btn-warning btn-xs" onclick="check(\' + index + \')">' +
+                var e = '<a  style="display: block;" class="btn btn-warning btn-xs" onclick="check(\'' + row.Id + '\')">' +
                  '<i class="glyphicon glyphicon-pencil"></i>审核</a>';
                 //var d = '<a  style="display: block;margin-top:5px;" class="btn btn-info btn-xs" onclick="view(\'' + index + '\')">' +
                 // '<i class="glyphicon glyphicon-list-alt"></i>查看</a>';
@@ -222,13 +222,36 @@
     </script>
     <script type="text/javascript">
         function check(index) {
-
+            index = parseInt(index);
             if (window.confirm("通过审核")) {
+                var ids = [index];
                 $('#EPList').bootstrapTable('remove',
                     {
                         field: 'Id',
-                        values: index
+                        values: ids
                     });
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/EPCheckPass",
+                    traditional: true,
+                    data: {
+                        Ids: ids
+                    },
+                    dataType: 'JSON',
+                    //success: function (data) {
+                    //    //显示删除成功
+                    //    if (data.Code == 1) {
+                    //        //window.confirm("确认删除");
+                    //        $('#EPList').bootstrapTable('remove',
+                    //            {
+                    //                field: 'Id',
+                    //                values: ids
+                    //            });
+                    //    } else {
+                    //        alert("删除失败");
+                    //    }
+                    //}
+                });
             }
         }
         </script>

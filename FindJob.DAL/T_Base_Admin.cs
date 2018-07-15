@@ -208,6 +208,9 @@ namespace FindJob.DAL
             co.Close();
             return (int)obj;
         }
+        /// <summary>
+        /// 企业审核
+        /// </summary>
         public List<FindJob.Model.T_Base_Enterprise> EPCheckGetList(int CurrentPage, int PageSize, string EPName)
         {
             SqlConnection co = new SqlConnection();
@@ -254,6 +257,335 @@ namespace FindJob.DAL
             object obj = cm.ExecuteScalar();
             co.Close();
             return (int)obj;
+        }
+        public int EPCheckPass(string ids)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select * from  T_Base_EnterpriseCheck where id ="+ids;
+            SqlDataReader dr = cm.ExecuteReader();
+            FindJob.Model.T_Base_Enterprise EP = new Model.T_Base_Enterprise();
+            while (dr.Read())
+            {
+                
+                //FindJob.Model.T_Base_EnterpriseHead head = new Model.T_Base_EnterpriseHead();
+                EP.Id = Convert.ToInt32(dr["Id"]);
+
+                EP.Name = Convert.ToString(dr["Name"]);
+                EP.Tel = Convert.ToString(dr["Tel"]);
+                EP.Address = Convert.ToString(dr["Address"]);
+                EP.Introduction = Convert.ToString(dr["Introduction"]);
+                EP.Qualification = Convert.ToString(dr["Qualification"]);
+                EP.IsChecked = Convert.ToBoolean(dr["IsChecked"]);
+                EP.UserId = Convert.ToInt32(dr["UserId"]);
+                EP.Tel = EP.Tel.Trim();
+            }
+            dr.Close();
+            cm.CommandText = "select * from  T_Base_Enterprise where Name='" + EP.Name+"'";
+            SqlDataReader dr2 = cm.ExecuteReader();
+            
+            if(dr2!=null)
+            {
+                cm.CommandText = "update T_Base_Enterprise set tel= '" + EP.Tel + "',address='"+EP.Address+"',introduction='"+EP.Introduction+"' where Name ='" + EP.Name+"'";
+            }
+            else
+            {
+                cm.CommandText = "insert into T_Base_Enterprise(tel,name,address,introduction,qualification,ischecked,userId) values('"
+                    + EP.Tel + "','"  + EP.Name + "','" + EP.Address + "','" + EP.Introduction + "','" + EP.Qualification + "',1,'" + EP.UserId + "')";
+            }
+            dr2.Close();
+            cm.ExecuteNonQuery();
+            //cm.CommandText = "delete from t_stock_inItems where headid in (" + ids + ");delete from t_stock_inhead where id in (" + ids + ") ; ";
+            cm.CommandText = "delete from T_Base_EnterpriseCheck where id in (" + ids + ") ; ";
+            cm.Connection = co;
+            int result = cm.ExecuteNonQuery();
+
+            co.Close();
+            return result;
+        }
+        /// <summary>
+        /// 学生信息审核
+        /// </summary>
+        public List<FindJob.Model.T_Base_Student> StuCheckGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+
+            StuName = "'%" + StuName + "%'";
+            SchoolName = "'%" + SchoolName + "%'";
+            MajorName = "'%" + MajorName + "%'";
+            ClassName = "'%" + ClassName + "%'";
+
+            cm.CommandText = "select top " + PageSize + " * from  T_Base_StudentCheck where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from T_Base_StudentCheck where ischeck=1 and Name like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and School like " + SchoolName + ") and  Name like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and ischeck = 0 and School like " + SchoolName;
+            //cm.Parameters.AddWithValue("@pageSize", PageSize);
+            //cm.Parameters.AddWithValue("@beforeCount", PageSize * (CurrentPage - 1));
+            SqlDataReader dr = cm.ExecuteReader();
+            List<FindJob.Model.T_Base_Student> lst = new List<Model.T_Base_Student>();
+            while (dr.Read())
+            {
+                FindJob.Model.T_Base_Student Stu = new Model.T_Base_Student();
+                //FindJob.Model.T_Base_EnterpriseHead head = new Model.T_Base_EnterpriseHead();
+                Stu.Id = Convert.ToInt32(dr["Id"]);
+
+                Stu.Name = Convert.ToString(dr["Name"]);
+                Stu.Major = Convert.ToString(dr["Major"]);
+                Stu.Phone = Convert.ToString(dr["Phone"]);
+                Stu.Class = Convert.ToString(dr["Class"]);
+                Stu.School = Convert.ToString(dr["School"]);
+                Stu.IdCard = Convert.ToString(dr["IdCard"]);
+                Stu.UserId = Convert.ToInt32(dr["UserId"]);
+                Stu.Gender = Convert.ToString(dr["Gender"]);
+                lst.Add(Stu);
+            }
+            dr.Close();
+            co.Close();
+            return lst;
+        }
+        public int StuCheckCount()
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select count(*) from T_Base_StudentCheck";
+            object obj = cm.ExecuteScalar();
+            co.Close();
+            return (int)obj;
+        }
+        public int StuCheckPass(string ids)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select * from  T_Base_StudentCheck where id =" + ids;
+            SqlDataReader dr = cm.ExecuteReader();
+            FindJob.Model.T_Base_Student Stu = new Model.T_Base_Student();
+            while (dr.Read())
+            {
+                Stu.Id = Convert.ToInt32(dr["Id"]);
+                Stu.Name = Convert.ToString(dr["Name"]);
+                Stu.Major = Convert.ToString(dr["Major"]);
+                Stu.Phone = Convert.ToString(dr["Phone"]);
+                Stu.Class = Convert.ToString(dr["Class"]);
+                Stu.School = Convert.ToString(dr["School"]);
+                Stu.IdCard = Convert.ToString(dr["IdCard"]);
+                Stu.UserId = Convert.ToInt32(dr["UserId"]);
+                Stu.Gender = Convert.ToString(dr["Gender"]);
+                Stu.IntentJob = Convert.ToInt32(dr["IntentJob"]);
+                Stu.IntentPlace= Convert.ToString(dr["IntentPlace"]);
+                Stu.IntentSalary= Convert.ToString(dr["IntentSalary"]);
+                Stu.Experience= Convert.ToString(dr["Experience"]);
+            }
+            dr.Close();
+            cm.CommandText = "select * from  T_Base_Student where IdCard='" + Stu.IdCard + "'";
+            SqlDataReader dr2 = cm.ExecuteReader();
+
+            if (dr2 != null)
+            {
+                cm.CommandText = "update T_Base_Student set intentsalary= '" + Stu.IntentSalary + "',intentjob='" + Stu.IntentJob + "',experience='" + Stu.Experience + "',intentplace='" + Stu.IntentPlace + "' where idcard ='" + Stu.IdCard + "'";
+            }
+            else
+            {
+                cm.CommandText = "insert into T_Base_Student(major,phone,class,gender,name,school,graduateprove,idcard,intentsalary,intentjob,experience,intentplace,userId) values('"
+                    + Stu.Major + "','" + Stu.Phone + "','" + Stu.Class + "','" + Stu.Gender + "','" + Stu.Name + "','" + Stu.School + "','" + Stu.GraduateProve + "','" + Stu.IdCard 
+                    + "','" + Stu.IntentSalary + "','" + Stu.IntentJob + "','" + Stu.Experience + "','" + Stu.IntentPlace + "','" + Stu.UserId+ "')";
+            }
+            dr2.Close();
+            cm.ExecuteNonQuery();
+            //cm.CommandText = "delete from t_stock_inItems where headid in (" + ids + ");delete from t_stock_inhead where id in (" + ids + ") ; ";
+            cm.CommandText = "delete from T_Base_StudentCheck where id in (" + ids + ") ; ";
+            cm.Connection = co;
+            int result = cm.ExecuteNonQuery();
+
+            co.Close();
+            return result;
+
+        }
+        /// <summary>
+        /// 学生就业信息审核
+        /// </summary>
+ 
+        public List<FindJob.Model.T_Base_EI> EICheckGetList(int CurrentPage, int PageSize, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+
+            StuName = "'%" + StuName + "%'";
+            SchoolName = "'%" + SchoolName + "%'";
+            MajorName = "'%" + MajorName + "%'";
+            ClassName = "'%" + ClassName + "%'";
+            
+            cm.CommandText = "select top " + PageSize + " * from  V_EICheckInfo where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from V_EICheckInfo where stuName like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and School like " + SchoolName + ") and  stuName like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and School like " + SchoolName;
+            //cm.Parameters.AddWithValue("@pageSize", PageSize);
+            //cm.Parameters.AddWithValue("@beforeCount", PageSize * (CurrentPage - 1));
+            SqlDataReader dr = cm.ExecuteReader();
+            List<FindJob.Model.T_Base_EI> lst = new List<Model.T_Base_EI>();
+            while (dr.Read())
+            {
+                FindJob.Model.T_Base_EI item = new Model.T_Base_EI();
+                //FindJob.Model.T_Base_EnterpriseHead head = new Model.T_Base_EnterpriseHead();
+                item.Id = Convert.ToInt32(dr["Id"]);
+
+                item.AssociateMajor = Convert.ToBoolean(dr["AssociateMajor"]);
+                item.Place = Convert.ToString(dr["Place"]);
+                item.Salary = Convert.ToDecimal(dr["Salary"]);
+                item.Name = Convert.ToString(dr["Name"]);
+                item.SanFang = Convert.ToString(dr["SanFang"]);
+                item.StudentId = Convert.ToInt32(dr["StudentId"]);
+                item.Major = Convert.ToString(dr["Major"]);
+                item.Phone = Convert.ToString(dr["Phone"]);
+                item.Class = Convert.ToString(dr["Class"]);
+                item.School = Convert.ToString(dr["School"]);
+                item.StuName = Convert.ToString(dr["StuName"]);
+                lst.Add(item);
+            }
+            dr.Close();
+            co.Close();
+            return lst;
+        }
+        public int EICheckCount()
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select count(*) from V_EICheckInfo";
+            object obj = cm.ExecuteScalar();
+            co.Close();
+            return (int)obj;
+        }
+        public int EICheckPass(string ids)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select * from  T_Base_EICheck where id =" + ids;
+            SqlDataReader dr = cm.ExecuteReader();
+            
+            FindJob.Model.T_Base_EI item = new Model.T_Base_EI();
+            while (dr.Read())
+            {
+                
+                //FindJob.Model.T_Base_EnterpriseHead head = new Model.T_Base_EnterpriseHead();
+                item.Id = Convert.ToInt32(dr["Id"]);
+
+                item.AssociateMajor = Convert.ToBoolean(dr["AssociateMajor"]);
+                item.Place = Convert.ToString(dr["Place"]);
+                item.Salary = Convert.ToDecimal(dr["Salary"]);
+                item.Name = Convert.ToString(dr["Name"]);
+                item.SanFang = Convert.ToString(dr["SanFang"]);
+                item.StudentId = Convert.ToInt32(dr["StudentId"]);
+
+               
+            }
+            dr.Close();
+            cm.CommandText = "select * from  T_Base_EI where studentid='" + item.StudentId + "'";
+            SqlDataReader dr2 = cm.ExecuteReader();
+
+            if (dr2 != null)
+            {
+                cm.CommandText = "update T_Base_EI set AssociateMajor= '" + item.AssociateMajor + "',Place='" + item.Place + "',Salary='" + item.Salary + "',Name='" + item.Name + "',SanFang='" + item.SanFang + "'where studentid ='" + item.StudentId + "'";
+            }
+            else
+            {
+                cm.CommandText = "insert into T_Base_EI(AssociateMajor,Place,Salary,name,sanfang,studentid) values('"
+                    + item.AssociateMajor + "','" + item.Place + "','" + item.Salary + "','" + item.Name + "','" + item.SanFang + "','" + item.StudentId + "')";
+            }
+            dr2.Close();
+            cm.ExecuteNonQuery();
+            //cm.CommandText = "delete from t_stock_inItems where headid in (" + ids + ");delete from t_stock_inhead where id in (" + ids + ") ; ";
+            cm.CommandText = "delete from T_Base_EICheck where id in (" + ids + ") ; ";
+            cm.Connection = co;
+            int result = cm.ExecuteNonQuery();
+
+            co.Close();
+            return result;
+
+        }
+
+        /// <summary>
+        /// 学生就业信息
+        /// </summary>
+        public List<FindJob.Model.T_Base_EI> EIGetList(int PageSize, int CurrentPage, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+
+            StuName = "'%" + StuName + "%'";
+            SchoolName = "'%" + SchoolName + "%'";
+            MajorName = "'%" + MajorName + "%'";
+            ClassName = "'%" + ClassName + "%'";
+
+            cm.CommandText = "select top " + PageSize + " * from  V_EIInfo where  id not in (select top " + PageSize * (CurrentPage - 1) + " id from V_EIInfo where stuName like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and School like " + SchoolName + ") and  stuName like " + StuName + " and Major like " + MajorName + " and Class like " + ClassName + " and School like " + SchoolName;
+            //cm.Parameters.AddWithValue("@pageSize", PageSize);
+            //cm.Parameters.AddWithValue("@beforeCount", PageSize * (CurrentPage - 1));
+            SqlDataReader dr = cm.ExecuteReader();
+            List<FindJob.Model.T_Base_EI> lst = new List<Model.T_Base_EI>();
+            while (dr.Read())
+            {
+                FindJob.Model.T_Base_EI item = new Model.T_Base_EI();
+                //FindJob.Model.T_Base_EnterpriseHead head = new Model.T_Base_EnterpriseHead();
+                item.Id = Convert.ToInt32(dr["Id"]);
+
+                item.AssociateMajor = Convert.ToBoolean(dr["AssociateMajor"]);
+                item.Place = Convert.ToString(dr["Place"]);
+                item.Salary = Convert.ToDecimal(dr["Salary"]);
+                item.Name = Convert.ToString(dr["Name"]);
+                item.SanFang = Convert.ToString(dr["SanFang"]);
+                item.StudentId = Convert.ToInt32(dr["StudentId"]);
+                item.Major = Convert.ToString(dr["Major"]);
+                item.Phone = Convert.ToString(dr["Phone"]);
+                item.Class = Convert.ToString(dr["Class"]);
+                item.School = Convert.ToString(dr["School"]);
+                item.StuName = Convert.ToString(dr["StuName"]);
+                lst.Add(item);
+            }
+            dr.Close();
+            co.Close();
+            return lst;
+        }
+        public int EICount()
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            cm.Connection = co;
+            cm.CommandText = "select count(*) from V_EIInfo";
+            object obj = cm.ExecuteScalar();
+            co.Close();
+            return (int)obj;
+        }
+        public int EIDelete(string ids)
+        {
+            SqlConnection co = new SqlConnection();
+            co.ConnectionString = constr;
+            co.Open();
+            SqlCommand cm = new SqlCommand();
+            //cm.CommandText = "delete from t_stock_inItems where headid in (" + ids + ");delete from t_stock_inhead where id in (" + ids + ") ; ";
+            cm.CommandText = "delete from T_Base_EI where id in (" + ids + ") ; ";
+            cm.Connection = co;
+            int result = cm.ExecuteNonQuery();
+            co.Close();
+            return result;
         }
     }
    

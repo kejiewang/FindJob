@@ -20,7 +20,6 @@ namespace FindJob.Web.Controllers.Admin
         {
             return View();
         }
-     
         public JsonResult EPGetList(int pageSize, int pageIndex, string EPName)
         {
 
@@ -59,7 +58,10 @@ namespace FindJob.Web.Controllers.Admin
             bll.EPDelete(Ids);
             return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
         }
-
+        /// <summary>
+        /// 求职学生信息
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ApplyJobIndex()
         {
             return View();
@@ -73,6 +75,10 @@ namespace FindJob.Web.Controllers.Admin
             return Json(new { total = count, rows = lst });
             //return Json(lst);
         }
+        /// <summary>
+        /// 企业审核
+        /// </summary>
+        /// <returns></returns>
         public ActionResult EPCheck()
         {
             return View();
@@ -86,5 +92,81 @@ namespace FindJob.Web.Controllers.Admin
             return Json(new { total = count, rows = lst });
             //return Json(lst);
         }
+        public JsonResult EPCheckPass(string[] Ids)
+        {
+            
+            bll.EPCheckPass(Ids);
+            return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
+        }
+        /// <summary>
+        /// 学生信息审核
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult StuCheckIndex()
+        {
+            return View();
+        }
+        public JsonResult StuCheckGetList(int pageSize, int pageIndex, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+
+            List<FindJob.Model.T_Base_Student> lst = new List<FindJob.Model.T_Base_Student>();
+            lst = bll.StuCheckGetList(pageIndex, pageSize, StuName, SchoolName, MajorName, ClassName);
+            int count = bll.EPCount();
+            return Json(new { total = count, rows = lst });
+            //return Json(lst);
+        }
+        public JsonResult StuCheckPass(string[] Ids)
+        {
+            FindJob.BLL.T_Base_Admin bll = new BLL.T_Base_Admin();
+            bll.StuCheckPass(Ids);
+            return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
+        }
+        /// <summary>
+        /// 就业学生信息
+        /// </summary>
+        public ActionResult EIIndex()
+        {
+            return View();
+        }
+        public JsonResult EIGetList(int pageSize, int pageIndex, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+
+            List<FindJob.Model.T_Base_EI> lst = new List<FindJob.Model.T_Base_EI>();
+            lst = bll.EIGetList(pageIndex, pageSize, StuName, SchoolName, MajorName, ClassName);
+            int count = bll.EICount();
+            return Json(new { total = count, rows = lst });
+            //return Json(lst);
+        }
+        public JsonResult EIDelete(string[] Ids)
+        {
+            FindJob.BLL.T_Base_Admin bll = new BLL.T_Base_Admin();
+            bll.EIDelete(Ids);
+            return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
+        }
+
+
+        /// <summary>
+        /// 就业学生信息学生审核
+        /// </summary>
+        public JsonResult EICheckGetList(int pageSize, int pageIndex, string StuName, string SchoolName, string MajorName, string ClassName)
+        {
+
+            List<FindJob.Model.T_Base_EI> lst = new List<FindJob.Model.T_Base_EI>();
+            lst = bll.EICheckGetList(pageIndex, pageSize, StuName, SchoolName, MajorName, ClassName);
+            int count = bll.EICheckCount();
+            return Json(new { total = count, rows = lst });
+            //return Json(lst);
+        }
+        public JsonResult EICheckPass(string[] Ids)
+        {
+            FindJob.BLL.T_Base_Admin bll = new BLL.T_Base_Admin();
+            bll.EICheckPass(Ids);
+            return Json(new FindJob.Model.Message() { Code = 1, Content = "删除成功" });
+        }
+        public ActionResult EICheckIndex()
+        {
+            return View();
+        }
+
     }
 }
